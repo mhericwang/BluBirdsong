@@ -14,7 +14,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
-    private Long postId;
+    private Long id;
 
     @Column(name = "subject_line")
     private String subjectLine;
