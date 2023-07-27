@@ -1,4 +1,4 @@
-package com.bluebirdsong.backend;
+package com.blubirdsong.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

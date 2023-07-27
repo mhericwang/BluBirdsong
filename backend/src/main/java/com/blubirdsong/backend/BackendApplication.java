@@ -1,4 +1,4 @@
-package com.bluebirdsong.backend;
+package com.blubirdsong.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
