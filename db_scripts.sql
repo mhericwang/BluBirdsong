@@ -1,5 +1,5 @@
-create user blubird with password 'pwd';
+create user blubird with encrypted password 'pwd';
 
 create database bludb;
 
-grant all privileges on database bludb to blubird;
+grant all on schema public to blubird;

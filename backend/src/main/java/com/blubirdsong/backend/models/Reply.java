@@ -3,6 +3,8 @@ package com.blubirdsong.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -21,7 +23,14 @@ public class Reply {
     private String body;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @NonNull
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @Column(name = "parent_reply_id")
+    private Long parentReplyId;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_reply_id")
+    private Set<Reply> replies;
+
 }

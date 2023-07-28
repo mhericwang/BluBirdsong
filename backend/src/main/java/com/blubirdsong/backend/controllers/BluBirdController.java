@@ -31,24 +31,29 @@ public class BluBirdController {
         return ResponseEntity.ok(postService.getAllPost());
     }
 
-    @PostMapping("/reply/{postId}")
-    public ResponseEntity<String> createReply(@RequestBody Reply reply, @PathVariable String postId) {
+    @PostMapping("/reply/{id}")
+    public ResponseEntity<String> createReply(@RequestBody Reply reply, @PathVariable String id, @RequestParam boolean isPost) {
         if (reply.getBody().isEmpty()) {
             return ResponseEntity.badRequest().body("Reply cannot have an empty body.");
         }
         Reply createdReply;
         try {
-            createdReply = replyService.createReply(reply, Long.parseLong(postId));
+            // request param will always be required by default
+            createdReply = isPost ? replyService.createReply(reply, Long.parseLong(id))
+                                  : replyService.createReplyOfReply(reply, Long.parseLong(id));
         } catch (Exception e) {
-            // we could not find the post
-            return ResponseEntity.badRequest().body("Specified post with id: " + postId + " was not found.");
+            // we could not find the post/reply
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok("A new reply with id: " + createdReply.getReplyId().toString() + " created successfully.");
     }
 
-    @GetMapping("/reply/{postId}")
-    public ResponseEntity<List<Reply>> getAllReplies(@PathVariable String postId) {
-        return ResponseEntity.ok(replyService.getAllReplies(Long.parseLong(postId)));
+    @GetMapping("/reply/{id}")
+    public ResponseEntity<List<Reply>> getAllReplies(@PathVariable String id, @RequestParam boolean isPost) {
+        return ResponseEntity.ok(
+                isPost ? replyService.getAllReplies(Long.parseLong(id))
+                       : replyService.getAllRepliesOfReply(Long.parseLong(id)).stream().toList()
+        );
     }
 
 }

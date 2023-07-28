@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Transactional
@@ -24,5 +25,16 @@ public class ReplyService {
 
     public List<Reply> getAllReplies(Long id) {
         return replyRepository.findAllByPostId(id);
+    }
+
+    public Reply createReplyOfReply(Reply reply, Long parentReplyId) {
+        Reply parent = replyRepository.findById(parentReplyId).orElseThrow();
+        reply.setParentReplyId(parentReplyId);
+        parent.getReplies().add(replyRepository.save(reply));
+        return reply;
+    }
+
+    public Set<Reply> getAllRepliesOfReply(Long id) {
+        return replyRepository.findAllByReplyId(id);
     }
 }
